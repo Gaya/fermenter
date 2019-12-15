@@ -1,0 +1,34 @@
+@startuml
+
+title Fermenter Data Model
+
+class Recipe {
+    String! id
+    String! name
+    String! description
+    String prerequisites
+    Float difficulty
+}
+
+class Step {
+    Float! order
+    String! name
+    String! description
+}
+
+'class Brand {
+'  String name
+'}
+'
+'class Bottle {
+'  String name
+'  Float age
+'  Float abv
+'  String type
+'}
+'
+'Brand "1..1" --- "0..*" Bottle
+
+Recipe "1..1" --- "0..*" Step
+
+@enduml
