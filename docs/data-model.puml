@@ -2,33 +2,70 @@
 
 title Fermenter Data Model
 
-class Recipe {
-    String! id
-    String! name
-    String! description
-    String prerequisites
-    Float difficulty
+package RecipeData <<Rectangle>> {
+    class Recipe {
+        String id
+        String name
+        String? description
+        String? prerequisites
+        Float? difficulty
+    }
+
+    class Step {
+        Float increment
+        String name
+        Enum baseUnit
+        Float baseAmount
+        String? description
+    }
+
+    class Ingredient {
+        String id
+        String name
+        String? description
+    }
+
+    class StepIngredient {
+        Enum unit
+        Float amount
+        String? description
+    }
 }
 
-class Step {
-    Float! order
-    String! name
-    String! description
+package UserData <<Rectangle>> {
+    class Batch {
+        String name
+        DateTime startDate
+        DateTime? endDate
+        String? remarks
+        Float? mark
+    }
+
+    class BatchStep {
+        DateTime startDate
+        DateTime? endDate
+        Float? remindInDays
+        String? remarks
+    }
+
+    class BatchStepIngredient {
+        Enum unit
+        Float amount
+    }
 }
 
-'class Brand {
-'  String name
-'}
-'
-'class Bottle {
-'  String name
-'  Float age
-'  Float abv
-'  String type
-'}
-'
-'Brand "1..1" --- "0..*" Bottle
 
-Recipe "1..1" --- "0..*" Step
+Recipe "1..1" --- "0..*" Step : Follows >
+Step "1..1" --- "0..*" StepIngredient : Requires >
+Ingredient "1..1" --- "0..*" StepIngredient : Describes use of <
+
+Batch "1..1" --- "0..*" BatchStep : Executes >
+Batch "1..1" --- "0..1" Batch : Based on previous <
+Batch "1..1" --- "0..1" Batch : Result of <
+BatchStep "1..1" --- "0..*" BatchStepIngredient : Makes us of >
+
+Recipe "1..1" --- "0..*" Batch : Based on <
+Step "1..1" --- "0..*" BatchStep : As described by <
+Ingredient "1..1" --- "0..*" BatchStepIngredient : Makes us of <
 
 @enduml
