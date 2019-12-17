@@ -1,6 +1,11 @@
+import 'reflect-metadata';
+
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import { render } from 'react-dom';
+
+import './db';
 import App from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import './index.css';
+
+render(<App />, document.getElementById('root'));
